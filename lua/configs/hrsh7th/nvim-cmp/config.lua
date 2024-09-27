@@ -27,6 +27,7 @@ local setup_opts = {
     { name = "nvim_lsp" },
     { name = "luasnip" },
   }, {
+    { name = "copilot" }, -- github copilot -- <- 新增代码
     { name = "buffer" },
     { name = "async_path" },
   }),
