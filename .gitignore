@@ -12,8 +12,8 @@
 # hooks
 # /preinit.vim
 # /postinit.vim
-/lua/preinit.lua
-/lua/postinit.lua
+# /lua/preinit.lua
+# /lua/postinit.lua
 
 # plugin hooks
 /lua/plugins/users.lua
