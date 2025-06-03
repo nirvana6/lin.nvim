@@ -10,8 +10,8 @@
 /go-installer
 
 # hooks
-/preinit.vim
-/postinit.vim
+# /preinit.vim
+# /postinit.vim
 /lua/preinit.lua
 /lua/postinit.lua
 
