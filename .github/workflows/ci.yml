@@ -61,12 +61,15 @@ jobs:
           args: --config-path .stylua.toml ./lua
       - name: Auto commit
         if: ${{ github.ref != 'refs/heads/main' }}
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "chore(pr): auto-commit"
   ubuntu_installer:
     name: Ubuntu Installer
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: Swatinem/rust-cache@v2
       - uses: mozilla-actions/sccache-action@v0.0.9
@@ -78,16 +81,14 @@ jobs:
         env:
           SCCACHE_GHA_ENABLED: "true"
           RUSTC_WRAPPER: "sccache"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          sudo apt-get install -q -y fd-find
-          sudo apt-get install -q -y bat
-          sudo apt-get install -q -y ripgrep
-          sudo apt-get install -q -y eza
-          sudo ln -s $(which fdfind) /usr/local/bin/fd
-          sudo ln -s $(which batcat) /usr/local/bin/bat
-          fd --version
-          bat --version
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          cargo binstall -y --force fd-find
+          cargo binstall -y --force ripgrep
+          cargo binstall -y --force bat
+          cargo binstall -y --force eza
           echo '${{ steps.extract_branch.outputs.branch }}'
           export BRANCH_NAME=${{ steps.extract_branch.outputs.branch }}
           git clone --single-branch --branch $BRANCH_NAME --depth=1 https://github.com/linrongbin16/lin.nvim ~/.nvim && cd ~/.nvim && bash -euxo pipefail ./install
@@ -107,25 +108,28 @@ jobs:
         env:
           SCCACHE_GHA_ENABLED: "true"
           RUSTC_WRAPPER: "sccache"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
+          brew install fd
+          brew install ripgrep
+          brew install bat
+          brew install eza
           echo '${{ steps.extract_branch.outputs.branch }}'
           echo ${{ steps.extract_branch.outputs.branch }}
           export HOMEBREW_NO_AUTO_UPDATE=1
           export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-          brew install fd
-          brew install bat
-          brew install ripgrep
-          brew install eza
           git clone --single-branch --branch ${{ steps.extract_branch.outputs.branch }} --depth=1 https://github.com/linrongbin16/lin.nvim ~/.nvim && cd ~/.nvim && bash -euxo pipefail ./install
   windows_installer:
     name: Windows Installer
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-latest, windows-11-arm]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
       - uses: Swatinem/rust-cache@v2
-      - uses: mozilla-actions/sccache-action@v0.0.9
-      - uses: MinoruSekine/setup-scoop@v4.0.1
+      - uses: MinoruSekine/setup-scoop@v4.0.2
         with:
           buckets: extras
       - name: Get branch
@@ -137,13 +141,8 @@ jobs:
           arch: amd64_x86
       - name: Install lin.nvim
         env:
-          SCCACHE_GHA_ENABLED: "true"
-          RUSTC_WRAPPER: "sccache"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo '${{ steps.extract_branch.outputs.branch }}'
           echo ${{ steps.extract_branch.outputs.branch }}
-          scoop install fd
-          scoop install bat
-          scoop install ripgrep
-          scoop install eza
           git clone --single-branch --branch ${{ steps.extract_branch.outputs.branch }} --depth=1 https://github.com/linrongbin16/lin.nvim $env:USERPROFILE\.nvim && cd $env:USERPROFILE\.nvim && pwsh .\install.ps1

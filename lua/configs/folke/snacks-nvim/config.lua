@@ -5,17 +5,29 @@ require("snacks").setup({
   styles = {
     input = {
       border = constants.window.border,
-      width = layout.editor.width(
-        constants.window.layout.input.scale,
-        constants.window.layout.input.min,
-        constants.window.layout.input.max
-      ),
+      width = constants.layout.input.scale,
       height = 1,
       relative = "cursor",
       row = 1,
       col = 0,
       keys = {
         i_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "i", expr = true },
+      },
+    },
+    lazygit = {
+      border = constants.window.border,
+      -- height = constants.layout.window.scale,
+      height = function()
+        return layout.editor.height(constants.layout.window.scale, 1)
+      end,
+      width = function()
+        return layout.editor.width(constants.layout.window.scale, 1)
+      end,
+      relative = "editor",
+      backdrop = false,
+      wo = {
+        spell = false,
+        wrap = false,
       },
     },
   },
@@ -26,12 +38,14 @@ require("snacks").setup({
     layouts = {
       select = {
         layout = {
-          width = layout.editor.width(
-            constants.window.layout.select.scale,
-            constants.window.layout.select.min,
-            constants.window.layout.select.max
-          ),
-          min_width = constants.window.layout.select.min,
+          width = function()
+            return layout.editor.width(
+              constants.layout.select.scale,
+              constants.layout.select.min,
+              constants.layout.select.max
+            )
+          end,
+          min_width = constants.layout.select.min,
           border = constants.window.border,
         },
       },

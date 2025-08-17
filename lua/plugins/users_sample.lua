@@ -21,48 +21,12 @@
 --   {
 --     "m4xshen/hardtime.nvim",
 --     dependencies = { "MunifTanjim/nui.nvim" },
+--     config = lua_config("m4xshen/hardtime.nvim"),
 --   },
 --   -- No-highlight
 --   {
 --     "romainl/vim-cool",
 --     event = { BufReadPre, BufNewFile, VeryLazy },
---   },
---   -- Split-join
---   {
---     "AndrewRadev/splitjoin.vim",
---     event = { BufReadPre, BufNewFile, VeryLazy },
---     submodules = false,
---   },
---   -- Auto-pairs
---   {
---     "windwp/nvim-autopairs",
---     event = { VeryLazy, InsertEnter },
---     config = lua_config("windwp/nvim-autopairs"),
---   },
---   -- Surround
---   {
---     "kylechui/nvim-surround",
---     version = "*",
---     event = { BufReadPre, BufNewFile, VeryLazy },
---     config = lua_config("kylechui/nvim-surround"),
---   },
---   -- Comment
---   {
---     "numToStr/Comment.nvim",
---     event = { BufReadPre, BufNewFile, VeryLazy },
---     config = lua_config("numToStr/Comment.nvim"),
---   },
---   -- UI
---   {
---     "folke/noice.nvim",
---     lazy = false,
---     config = lua_config("folke/noice.nvim"),
---   },
---   -- Symbol navigation
---   {
---     "DNLHC/glance.nvim",
---     cmd = { "Glance" },
---     config = lua_config("DNLHC/glance.nvim"),
 --   },
 --   -- Yank
 --   {
@@ -70,55 +34,21 @@
 --     config = lua_config("gbprod/yanky.nvim"),
 --     keys = lua_keys("gbprod/yanky.nvim"),
 --   },
---   -- Oil file manager
 --   {
---     "stevearc/oil.nvim",
---     config = lua_config("stevearc/oil.nvim"),
---     keys = lua_keys("stevearc/oil.nvim"),
+--     "rachartier/tiny-glimmer.nvim",
+--     event = "VeryLazy",
+--     priority = 1, -- Needs to be a really low priority, to catch others plugins keybindings.
+--     opts = {},
 --   },
---   -- Auto save
+--   -- Markdown Preview
 --   {
---     "Pocco81/auto-save.nvim",
---     cmd = { "ASToggle" },
---     event = { VeryLazy, BufReadPre, BufNewFile },
---     config = lua_config("Pocco81/auto-save.nvim"),
---     keys = lua_keys("Pocco81/auto-save.nvim"),
---   },
---   -- Terminal
---   {
---     "akinsho/toggleterm.nvim",
---     version = "*",
---     event = { VeryLazy, CmdlineEnter },
---     config = lua_config("akinsho/toggleterm.nvim"),
---     keys = lua_keys("akinsho/toggleterm.nvim"),
---   },
---   -- Generate documents
---   {
---     "danymat/neogen",
---     cmd = { "Neogen" },
---     dependencies = { "L3MON4D3/LuaSnip" },
---     config = lua_config("danymat/neogen"),
---     keys = lua_keys("danymat/neogen"),
---   },
---   -- Undo tree
---   {
---     "mbbill/undotree",
---     event = { VeryLazy, CmdlineEnter },
---     init = lua_init("mbbill/undotree"),
---     keys = lua_keys("mbbill/undotree"),
---   },
---   -- Better markdown previewer for github
---   {
---     "wallpants/github-preview.nvim",
---     cmd = { "GithubPreviewToggle" },
---     keys = lua_keys("wallpants/github-preview.nvim"),
---     config = lua_config("wallpants/github-preview.nvim"),
---   },
---   {
---     "toppair/peek.nvim",
---     build = "deno task --quiet build:fast",
---     config = lua_config("toppair/peek.nvim"),
---     keys = lua_keys("toppair/peek.nvim"),
+--     "iamcco/markdown-preview.nvim",
+--     build = function()
+--       vim.fn["mkdp#util#install"]()
+--     end,
+--     ft = { "markdown" },
+--     init = lua_init("iamcco/markdown-preview.nvim"),
+--     keys = lua_keys("iamcco/markdown-preview.nvim"),
 --   },
 --   -- Vim/Neovim api version helper
 --   {
@@ -130,25 +60,6 @@
 --     "folke/todo-comments.nvim",
 --     event = { VeryLazy, BufReadPre, BufNewFile },
 --     config = lua_config("folke/todo-comments.nvim"),
---   },
---   -- Tags generator
---   {
---     "linrongbin16/gentags.nvim",
---     event = { VeryLazy },
---     config = lua_config("linrongbin16/gentags.nvim"),
---   },
---   -- Diagnostic
---   {
---     "folke/trouble.nvim",
---     cmd = { "Trouble", "TroubleClose", "TroubleToggle", "TroubleRefresh" },
---     config = lua_config("folke/trouble.nvim"),
---     keys = lua_keys("folke/trouble.nvim"),
---   },
---   -- Search and replace
---   {
---     "nvim-pack/nvim-spectre",
---     cmd = { "Spectre" },
---     config = lua_config("nvim-pack/nvim-spectre"),
 --   },
 --   -- Neovim development
 --   {
@@ -174,10 +85,9 @@
 --     keys = lua_keys("inkarkat/vim-mark"),
 --   },
 --   {
---     "windwp/nvim-ts-autotag",
---     event = { VeryLazy, InsertEnter },
---     dependencies = { "nvim-treesitter/nvim-treesitter" },
---     config = lua_config("windwp/nvim-ts-autotag"),
+--     "mrcjkb/rustaceanvim",
+--     version = "*",
+--     lazy = false,
 --   },
 -- }
 

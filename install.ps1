@@ -52,16 +52,15 @@ function Backup([string]$src)
 
 # utils }
 
-# dependencies {
-
 function CoreDeps()
 {
+  Install -command "scoop install 7zip" -target "7z"
+  Install -command "scoop install gzip" -target "gzip"
+  Install -command "scoop install unzip" -target "unzip"
+
   scoop bucket add extras
   scoop install mingw
-  scoop install uutils-coreutils
-
-  # neovim
-  Install -command "scoop install neovim" -target "nvim"
+  scoop install coreutils
 
   # shell
   Install -command "scoop install which" -target "which"
@@ -77,38 +76,39 @@ function CoreDeps()
   Install -command "scoop install git" -target "git"
   Install -command "scoop install curl" -target "curl"
   Install -command "scoop install wget" -target "wget"
+}
 
-  # compress tools
-  Install -command "scoop install 7zip" -target "7z"
-  Install -command "scoop install gzip" -target "gzip"
-  Install -command "scoop install unzip" -target "unzip"
+function JsDeps()
+{
+  Info 'install javascript runtimes'
+  Install -command "scoop install nodejs" -target "node"
+  Install -command "scoop install bun" -target "bun"
+  Install -command "scoop install deno" -target "deno"
+}
 
-  # develop tools
+function GoDeps()
+{
+  Info 'install golang modern commands'
+  Install -command "scoop install go" -target "go"
   Install -command "scoop install lazygit" -target "lazygit"
   Install -command "scoop install fzf" -target "fzf"
 }
 
 function RustDeps()
 {
-  Info 'install rust and modern commands'
-  # rustc/cargo
+  Info 'install rust modern commands'
   Install -command "scoop install rustup" -target "cargo"
   Install -command "scoop install rustup" -target "rustc"
-  # modern commands
-  Install -command "cargo install ripgrep" -target "rg"
-  Install -command "cargo install fd-find" -target "fd"
-  Install -command "cargo install --locked bat" -target "bat"
-  Install -command "cargo install eza" -target "eza"
+  Install -command "scoop install fd" -target "fd"
+  Install -command "scoop install ripgrep" -target "rg"
+  Install -command "scoop install bat" -target "bat"
+  Install -command "scoop install eza" -target "eza"
+  Install -command "scoop install trashy" -target "trash"
 }
 
-function NpmDeps()
+function NeovimDeps()
 {
-  Info "install node/npm packages"
-  # nodejs
-  Install -command "scoop install nodejs" -target "node"
-  # npm
-  npm install --silent -g neovim
-  Install -command "npm install --silent -g trash-cli" -target "trash"
+  Install -command "scoop install neovim" -target "nvim"
 }
 
 function NvimConfig()
@@ -125,14 +125,6 @@ function NvimConfig()
     Copy-Item -Path "$NvimLspconfigHome\setup_handlers_sample.lua" -Destination "$NvimLspconfigSetupHandlers"
   }
 
-  # mason-null-ls.nvim
-  $MasonNulllsHome = "$NVIM_HOME\lua\configs\jay-babu\mason-null-ls-nvim"
-  $MasonNulllsSetupHandlers = "$MasonNulllsHome\setup_handlers.lua"
-  if (-not(TestReparsePoint $MasonNulllsSetupHandlers) -and -not(Test-Path $MasonNulllsSetupHandlers))
-  {
-    Copy-Item -Path "$MasonNulllsHome\setup_handlers_sample.lua" -Destination "$MasonNulllsSetupHandlers"
-  }
-
   # conform.nvim
   $ConformHome = "$NVIM_HOME\lua\configs\stevearc\conform-nvim"
   $ConformFormattersByFt = "$ConformHome\formatters_by_ft.lua"
@@ -140,6 +132,14 @@ function NvimConfig()
   {
     Copy-Item -Path "$ConformHome\formatters_by_ft_sample.lua" -Destination "$ConformFormattersByFt"
   }
+
+  # # mason-null-ls.nvim
+  # $MasonNulllsHome = "$NVIM_HOME\lua\configs\jay-babu\mason-null-ls-nvim"
+  # $MasonNulllsSetupHandlers = "$MasonNulllsHome\setup_handlers.lua"
+  # if (-not(TestReparsePoint $MasonNulllsSetupHandlers) -and -not(Test-Path $MasonNulllsSetupHandlers))
+  # {
+  #   Copy-Item -Path "$MasonNulllsHome\setup_handlers_sample.lua" -Destination "$MasonNulllsSetupHandlers"
+  # }
 
   # # nvim-lint
   # $NvimLintHome="$NVIM_HOME\lua\configs\mfussenegger\nvim-lint"
@@ -150,16 +150,15 @@ function NvimConfig()
   # }
 }
 
-# dependencies }
+function Main()
+{
+  Info "install for Windows"
+  CoreDeps
+  JsDeps
+  GoDeps
+  RustDeps
+  NeovimDeps
+  NvimConfig
+}
 
-Info "install for Windows"
-
-# dependency
-Info "install dependencies with scoop"
-
-CoreDeps
-RustDeps
-NpmDeps
-NvimConfig
-
-Info "install for Windows - done"
+Main

@@ -47,6 +47,7 @@ local M = {
     "folke/snacks.nvim",
     lazy = false,
     config = lua_config("folke/snacks.nvim"),
+    keys = lua_keys("folke/snacks.nvim"),
   },
 
   -- ---- HIGHLIGHT ----
@@ -72,16 +73,19 @@ local M = {
     event = { CmdlineEnter },
   },
 
-  -- ---- Specific Support ----
+  -- ---- MARKDOWN PREVIEW ----
 
   {
-    "iamcco/markdown-preview.nvim",
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-    ft = { "markdown" },
-    init = lua_init("iamcco/markdown-preview.nvim"),
-    keys = lua_keys("iamcco/markdown-preview.nvim"),
+    "wallpants/github-preview.nvim",
+    cmd = { "GithubPreviewToggle" },
+    keys = lua_keys("wallpants/github-preview.nvim"),
+    config = lua_config("wallpants/github-preview.nvim"),
+  },
+  {
+    "toppair/peek.nvim",
+    build = "deno task --quiet build:fast",
+    config = lua_config("toppair/peek.nvim"),
+    keys = lua_keys("toppair/peek.nvim"),
   },
 
   -- ---- UI ----
@@ -116,11 +120,11 @@ local M = {
     init = lua_init("airblade/vim-gitgutter"),
     keys = lua_keys("airblade/vim-gitgutter"),
   },
-  {
-    "kdheepak/lazygit.nvim",
-    init = lua_init("kdheepak/lazygit.nvim"),
-    keys = lua_keys("kdheepak/lazygit.nvim"),
-  },
+  -- {
+  --   "kdheepak/lazygit.nvim",
+  --   init = lua_init("kdheepak/lazygit.nvim"),
+  --   keys = lua_keys("kdheepak/lazygit.nvim"),
+  -- },
   -- Statusline
   {
     "linrongbin16/lsp-progress.nvim",
@@ -174,7 +178,6 @@ local M = {
     event = { VeryLazy, BufReadPre, BufNewFile },
     config = lua_config("neovim/nvim-lspconfig"),
   },
-  -- Lsp server management
   {
     "mason-org/mason.nvim",
     event = { VeryLazy, BufReadPre, BufNewFile },
@@ -200,18 +203,6 @@ local M = {
     },
     dependencies = { "neovim/nvim-lspconfig", "mason-org/mason.nvim" },
     config = lua_config("mason-org/mason-lspconfig.nvim"),
-  },
-  {
-    "stevearc/conform.nvim",
-    event = { BufWritePre, BufWritePost },
-    cmd = { "ConformInfo" },
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
-    },
-    config = lua_config("stevearc/conform.nvim"),
-    keys = lua_keys("stevearc/conform.nvim"),
   },
   {
     "nvimtools/none-ls.nvim",
@@ -240,19 +231,18 @@ local M = {
     },
     config = lua_config("jay-babu/mason-null-ls.nvim"),
   },
-  {
-    "DNLHC/glance.nvim",
-    event = { VeryLazy, BufReadPre, BufNewFile },
-    cmd = { "Glance" },
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
-      "nvimtools/none-ls.nvim",
-    },
-    config = lua_config("DNLHC/glance.nvim"),
-    keys = lua_keys("DNLHC/glance.nvim"),
-  },
+  -- {
+  --   "DNLHC/glance.nvim",
+  --   cmd = { "Glance" },
+  --   dependencies = {
+  --     "neovim/nvim-lspconfig",
+  --     "mason-org/mason.nvim",
+  --     "mason-org/mason-lspconfig.nvim",
+  --     "nvimtools/none-ls.nvim",
+  --   },
+  --   config = lua_config("DNLHC/glance.nvim"),
+  --   keys = lua_keys("DNLHC/glance.nvim"),
+  -- },
 
   -- ---- AUTO-COMPLETE ----
   {
@@ -270,11 +260,38 @@ local M = {
     "saghen/blink.cmp",
     event = { VeryLazy, CmdlineEnter, InsertEnter },
     dependencies = {
+      "brenoprata10/nvim-highlight-colors",
       "rafamadriz/friendly-snippets",
       "L3MON4D3/LuaSnip",
     },
-    version = "v0.*",
+    version = "*",
     config = lua_config("saghen/blink.cmp"),
+  },
+
+  -- ---- CODE-FORMATTER ----
+  {
+    "stevearc/conform.nvim",
+    event = { BufWritePre, BufWritePost },
+    cmd = { "ConformInfo" },
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
+    },
+    config = lua_config("stevearc/conform.nvim"),
+    keys = lua_keys("stevearc/conform.nvim"),
+  },
+
+  -- ---- CODE-ACTION ----
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "folke/snacks.nvim",
+    },
+    event = "LspAttach",
+    config = lua_config("rachartier/tiny-code-action.nvim"),
+    keys = lua_keys("rachartier/tiny-code-action.nvim"),
   },
 
   -- ---- KEY BINDING ----
@@ -291,15 +308,21 @@ local M = {
   -- ---- GIT INTEGRATION ----
 
   -- Blame
+  -- {
+  --   "f-person/git-blame.nvim",
+  --   cmd = {
+  --     "GitBlameToggle",
+  --     "GitBlameEnable",
+  --     "GitBlameDisable",
+  --   },
+  --   config = lua_config("f-person/git-blame.nvim"),
+  --   keys = lua_keys("f-person/git-blame.nvim"),
+  -- },
   {
-    "f-person/git-blame.nvim",
-    cmd = {
-      "GitBlameToggle",
-      "GitBlameEnable",
-      "GitBlameDisable",
-    },
-    config = lua_config("f-person/git-blame.nvim"),
-    keys = lua_keys("f-person/git-blame.nvim"),
+    "FabijanZulj/blame.nvim",
+    cmd = { "BlameToggle" },
+    config = lua_config("FabijanZulj/blame.nvim"),
+    keys = lua_keys("FabijanZulj/blame.nvim"),
   },
   -- Permlink
   {
