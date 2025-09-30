@@ -15,18 +15,18 @@
 # /preinit.vim
 # /postinit.vim
 # /lua/preinit.lua
-/lua/postinit.lua
+# /lua/postinit.lua
 
 # plugin hooks
-/lua/plugins/users.lua
-/lua/plugins_blacklist.lua
-/lua/configs/**/user_init.lua
-/lua/configs/**/user_init.vim
-/lua/configs/**/user_config.lua
-/lua/configs/**/user_config.vim
-/lua/configs/**/user_keys.lua
+# /lua/plugins/users.lua
+# /lua/plugins_blacklist.lua
+# /lua/configs/**/user_init.lua
+# /lua/configs/**/user_init.vim
+# /lua/configs/**/user_config.lua
+# /lua/configs/**/user_config.vim
+# /lua/configs/**/user_keys.lua
 
 # lsp hooks
-/lua/configs/**/ensure_installed.lua
-/lua/configs/**/setup_handlers.lua
-/lua/configs/stevearc/conform-nvim/formatters_by_ft.lua
+# /lua/configs/**/ensure_installed.lua
+# /lua/configs/**/setup_handlers.lua
+# /lua/configs/stevearc/conform-nvim/formatters_by_ft.lua
