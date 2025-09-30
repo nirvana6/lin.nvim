@@ -107,6 +107,8 @@ return {
   {
     "github/copilot.vim",
     lazy = false,
+    config = lua_config("github/copilot.vim"),
+    keys = lua_keys("github/copilot.vim"),
   },
   ------ zoom window temperarily ------
   {
